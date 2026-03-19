@@ -31,10 +31,44 @@
     </div>
   </div>
 
+  <!-- Login overlay -->
+  <div id="login-overlay">
+    <div id="login-box">
+      <h2>ELMScope</h2>
+      <p>Sign in to ArcGIS Online to browse your web maps.</p>
+      <label for="client-id-input">OAuth App Client ID</label>
+      <input type="text" id="client-id-input" placeholder="e.g. xA1b2C3d4E5f6…" autocomplete="off" />
+      <button id="btn-sign-in" class="ctrl-btn primary-btn">Sign In to ArcGIS</button>
+      <button id="btn-skip-login" class="ctrl-btn">Skip (demo mode)</button>
+      <div id="login-error" class="hidden"></div>
+    </div>
+  </div>
+
+  <!-- Map browser overlay (shown after login) -->
+  <div id="map-browser" class="hidden">
+    <div id="map-browser-inner">
+      <div id="map-browser-header">
+        <h3>Your Web Maps</h3>
+        <div id="portal-user-info"></div>
+      </div>
+      <div id="map-search-row">
+        <input type="text" id="map-search-input" placeholder="Search maps…" />
+        <button id="btn-search-maps" class="ctrl-btn">Search</button>
+        <button id="btn-my-maps" class="ctrl-btn">My Maps</button>
+      </div>
+      <div id="map-grid"></div>
+      <div id="map-browser-footer">
+        <button id="btn-close-browser" class="ctrl-btn">Cancel</button>
+        <button id="btn-sign-out" class="ctrl-btn">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Controls panel -->
   <div id="controls">
     <button id="btn-start" class="ctrl-btn">Start AR</button>
     <button id="btn-add-waypoint" class="ctrl-btn" disabled>Add Waypoint</button>
+    <button id="btn-browse-maps" class="ctrl-btn" disabled>Maps</button>
     <button id="btn-toggle-layers" class="ctrl-btn" disabled>Layers</button>
     <button id="btn-recalibrate" class="ctrl-btn" disabled>Recalibrate</button>
   </div>
@@ -45,6 +79,7 @@
     <label><input type="checkbox" id="layer-waypoints" checked /> Waypoints</label>
     <label><input type="checkbox" id="layer-paths" checked /> Paths</label>
     <label><input type="checkbox" id="layer-features" checked /> 3D Features</label>
+    <div id="webmap-layer-toggles"></div>
     <button id="btn-close-layers" class="ctrl-btn">Close</button>
   </div>
 
