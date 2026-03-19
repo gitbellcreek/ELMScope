@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>ArcGIS AR Waypoints</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/dark/main.css" />
+  <link rel="stylesheet" href="css/app.css" />
+
+  <script src="https://js.arcgis.com/4.29/"></script>
+</head>
+<body>
+  <!-- Live camera feed sits behind the transparent 3D scene -->
+  <video id="camera-feed" autoplay playsinline muted></video>
+
+  <!-- ArcGIS SceneView renders on top with a transparent background -->
+  <div id="sceneViewDiv"></div>
+
+  <!-- HUD overlay -->
+  <div id="hud">
+    <div id="hud-status">
+      <span id="gps-status" class="status-dot off" title="GPS"></span>
+      <span id="orientation-status" class="status-dot off" title="Orientation"></span>
+      <span id="camera-status" class="status-dot off" title="Camera"></span>
+    </div>
+    <div id="hud-info">
+      <div id="accuracy-display">Accuracy: --</div>
+      <div id="heading-display">Heading: --</div>
+    </div>
+  </div>
+
+  <!-- Controls panel -->
+  <div id="controls">
+    <button id="btn-start" class="ctrl-btn">Start AR</button>
+    <button id="btn-add-waypoint" class="ctrl-btn" disabled>Add Waypoint</button>
+    <button id="btn-toggle-layers" class="ctrl-btn" disabled>Layers</button>
+    <button id="btn-recalibrate" class="ctrl-btn" disabled>Recalibrate</button>
+  </div>
+
+  <!-- Layer panel (hidden by default) -->
+  <div id="layer-panel" class="hidden">
+    <h3>Layers</h3>
+    <label><input type="checkbox" id="layer-waypoints" checked /> Waypoints</label>
+    <label><input type="checkbox" id="layer-paths" checked /> Paths</label>
+    <label><input type="checkbox" id="layer-features" checked /> 3D Features</label>
+    <button id="btn-close-layers" class="ctrl-btn">Close</button>
+  </div>
+
+  <!-- Waypoint info popup -->
+  <div id="waypoint-popup" class="hidden">
+    <div id="popup-content"></div>
+    <button id="btn-close-popup" class="ctrl-btn">Close</button>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
