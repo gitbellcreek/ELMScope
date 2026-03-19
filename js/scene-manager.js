@@ -27,6 +27,10 @@ export function initScene(container) {
         ground: "world-elevation",
       });
 
+      // Keep elevation data for relative-to-ground layers but hide the
+      // grey terrain surface so the camera feed shows through.
+      map.ground.opacity = 0;
+
       view = new SceneView({
         container,
         map,
@@ -81,8 +85,8 @@ export function startSensorSync() {
           fov: 55,
         });
 
-        // goTo with no animation for instant update
-        view.goTo(cam, { animate: false }).catch(() => {});
+        // Direct assignment for instant, synchronous camera update
+        view.camera = cam;
       });
     }
 

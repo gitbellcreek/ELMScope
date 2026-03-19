@@ -132,6 +132,8 @@ export function loadWebMapLayers(itemId, sceneMap) {
           // Add each operational layer from the web map to our AR scene
           const layers = webMap.layers.toArray();
           layers.forEach((layer) => {
+            // Drape 2D web map features on the ground surface
+            layer.elevationInfo = { mode: "on-the-ground" };
             sceneMap.add(layer);
           });
           resolve({ webMap, layers });
@@ -159,5 +161,9 @@ export function getPortal() {
 
 export function isSignedIn() {
   return portal !== null && credential !== null;
+}
+
+export function getToken() {
+  return credential ? credential.token : null;
 }
 

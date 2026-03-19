@@ -24,6 +24,7 @@ import {
   removeWebMapLayers,
   getPortal,
   isSignedIn,
+  getToken,
 } from "./portal-auth.js";
 
 /* ── DOM refs ───────────────────────────────────────────────────── */
@@ -152,7 +153,11 @@ function renderMapGrid(items) {
     card.className = "map-card";
     card.dataset.itemId = item.id;
 
-    const thumb = item.thumbnailUrl || "https://www.arcgis.com/sharing/rest/content/items/" + item.id + "/info/" + (item.thumbnail || "thumbnail/ago_downloaded.png");
+    let thumb = item.thumbnailUrl || "https://www.arcgis.com/sharing/rest/content/items/" + item.id + "/info/" + (item.thumbnail || "thumbnail/ago_downloaded.png");
+    const token = getToken();
+    if (token && !thumb.includes("token=")) {
+      thumb += (thumb.includes("?") ? "&" : "?") + "token=" + token;
+    }
 
     card.innerHTML = `
       <img class="map-card-thumb" src="${thumb}" alt="" onerror="this.style.display='none'" />
