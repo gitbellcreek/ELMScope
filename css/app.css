@@ -216,7 +216,8 @@ html, body {
   margin-bottom: 6px;
 }
 
-#client-id-input {
+#username-input,
+#password-input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -228,7 +229,8 @@ html, body {
   outline: none;
 }
 
-#client-id-input:focus {
+#username-input:focus,
+#password-input:focus {
   border-color: #0ff;
 }
 

@@ -1,37 +1,41 @@
 /**
  * portal-auth.js
- * Handles ArcGIS Online OAuth 2.0 authentication and portal map browsing.
- * Users provide their own OAuth App Client ID to sign in.
+ * Handles ArcGIS Online authentication and portal map browsing.
+ * Uses simple token-based auth — user signs in with their ArcGIS
+ * Online username and password, no OAuth app registration needed.
  */
 
 let portal = null;
 let credential = null;
 
 /**
- * Register OAuth and sign in via popup.
- * @param {string} clientId - The user's registered ArcGIS OAuth App ID
+ * Sign in with ArcGIS Online username and password.
+ * @param {string} username
+ * @param {string} password
  * @returns {Promise<{portal: object, credential: object}>}
  */
-export function signIn(clientId) {
+export function signIn(username, password) {
   return new Promise((resolve, reject) => {
     require([
-      "esri/identity/OAuthInfo",
       "esri/identity/IdentityManager",
       "esri/portal/Portal",
-    ], (OAuthInfo, IdentityManager, Portal) => {
-      const oauthInfo = new OAuthInfo({
-        appId: clientId,
-        portalUrl: "https://www.arcgis.com",
-        popup: true,
-        flowType: "authorization-code",
-        popupCallbackUrl: getCallbackUrl(),
-      });
+    ], (IdentityManager, Portal) => {
+      const portalUrl = "https://www.arcgis.com/sharing/rest";
 
-      IdentityManager.registerOAuthInfos([oauthInfo]);
+      IdentityManager.generateToken(
+        { server: portalUrl, tokenServiceUrl: "https://www.arcgis.com/sharing/generateToken" },
+        { username, password }
+      )
+        .then((tokenResponse) => {
+          credential = {
+            userId: username,
+            server: "https://www.arcgis.com/sharing",
+            token: tokenResponse.token,
+            expires: tokenResponse.expires,
+          };
 
-      IdentityManager.getCredential("https://www.arcgis.com/sharing")
-        .then((cred) => {
-          credential = cred;
+          IdentityManager.registerToken(credential);
+
           portal = new Portal({ url: "https://www.arcgis.com" });
           portal.authMode = "immediate";
           return portal.load();
@@ -147,11 +151,3 @@ export function isSignedIn() {
   return portal !== null && credential !== null;
 }
 
-/**
- * Build the OAuth callback URL relative to the current page.
- */
-function getCallbackUrl() {
-  const loc = window.location;
-  const path = loc.pathname.replace(/\/[^/]*$/, "/oauth-callback.html");
-  return `${loc.origin}${path}`;
-}

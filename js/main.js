@@ -53,7 +53,8 @@ const headingDisp = document.getElementById("heading-display");
 
 // Login overlay
 const loginOverlay = document.getElementById("login-overlay");
-const clientIdInput = document.getElementById("client-id-input");
+const usernameInput = document.getElementById("username-input");
+const passwordInput = document.getElementById("password-input");
 const btnSignIn = document.getElementById("btn-sign-in");
 const btnSkipLogin = document.getElementById("btn-skip-login");
 const loginError = document.getElementById("login-error");
@@ -74,9 +75,10 @@ let loadedWebMapLayers = null; // track currently loaded web map layers
 /* ── Login flow ─────────────────────────────────────────────────── */
 
 btnSignIn.addEventListener("click", async () => {
-  const clientId = clientIdInput.value.trim();
-  if (!clientId) {
-    showLoginError("Please enter your OAuth App Client ID.");
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+  if (!username || !password) {
+    showLoginError("Please enter your username and password.");
     return;
   }
 
@@ -85,15 +87,16 @@ btnSignIn.addEventListener("click", async () => {
   loginError.classList.add("hidden");
 
   try {
-    await signIn(clientId);
+    await signIn(username, password);
+    passwordInput.value = "";
     loginOverlay.classList.add("hidden");
     showMapBrowser();
   } catch (err) {
     console.error("Sign-in failed:", err);
-    showLoginError("Sign-in failed: " + (err.message || "Unknown error"));
+    showLoginError("Sign-in failed: " + (err.message || "Invalid username or password"));
   } finally {
     btnSignIn.disabled = false;
-    btnSignIn.textContent = "Sign In to ArcGIS";
+    btnSignIn.textContent = "Sign In";
   }
 });
 

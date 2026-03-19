@@ -35,10 +35,12 @@
   <div id="login-overlay">
     <div id="login-box">
       <h2>ELMScope</h2>
-      <p>Sign in to ArcGIS Online to browse your web maps.</p>
-      <label for="client-id-input">OAuth App Client ID</label>
-      <input type="text" id="client-id-input" placeholder="e.g. xA1b2C3d4E5f6…" autocomplete="off" />
-      <button id="btn-sign-in" class="ctrl-btn primary-btn">Sign In to ArcGIS</button>
+      <p>Sign in with your ArcGIS Online account.</p>
+      <label for="username-input">Username</label>
+      <input type="text" id="username-input" placeholder="Your ArcGIS Online username" autocomplete="username" />
+      <label for="password-input">Password</label>
+      <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" />
+      <button id="btn-sign-in" class="ctrl-btn primary-btn">Sign In</button>
       <button id="btn-skip-login" class="ctrl-btn">Skip (demo mode)</button>
       <div id="login-error" class="hidden"></div>
     </div>
