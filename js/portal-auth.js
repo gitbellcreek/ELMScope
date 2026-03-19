@@ -20,18 +20,28 @@ export function signIn(username, password) {
       "esri/identity/IdentityManager",
       "esri/portal/Portal",
     ], (IdentityManager, Portal) => {
-      const portalUrl = "https://www.arcgis.com/sharing/rest";
+      // Call the ArcGIS Online token endpoint directly
+      const tokenUrl = "https://www.arcgis.com/sharing/rest/generateToken";
+      const body = new URLSearchParams({
+        username,
+        password,
+        referer: window.location.origin,
+        expiration: 120,
+        f: "json",
+      });
 
-      IdentityManager.generateToken(
-        { server: portalUrl, tokenServiceUrl: "https://www.arcgis.com/sharing/generateToken" },
-        { username, password }
-      )
-        .then((tokenResponse) => {
+      fetch(tokenUrl, { method: "POST", body })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            throw new Error(data.error.message || "Token generation failed");
+          }
+
           credential = {
             userId: username,
             server: "https://www.arcgis.com/sharing",
-            token: tokenResponse.token,
-            expires: tokenResponse.expires,
+            token: data.token,
+            expires: data.expires,
           };
 
           IdentityManager.registerToken(credential);
